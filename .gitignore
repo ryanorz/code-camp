@@ -37,3 +37,7 @@ starscream/.idea/*
 # hbase
 hbase/cpp/build
 hbase/cpp/*.kdev*
+
+# kafka
+kafka/cpp/build
+kafka/cpp/*.kdev*
