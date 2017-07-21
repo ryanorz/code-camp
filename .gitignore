@@ -41,3 +41,8 @@ hbase/cpp/*.kdev*
 # kafka
 kafka/cpp/build
 kafka/cpp/*.kdev*
+kafka/*.kdev*
+
+# boost
+boost/build
+boost/*.kdev*
