@@ -14,6 +14,7 @@ public class DeviceRestService {
     @Context
     UriInfo uriInfo;
 
+    // curl -vi "localhost:8080/myapp/device"
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Device> fetchAll(
@@ -23,34 +24,37 @@ public class DeviceRestService {
         System.out.println("> Get list of devices, page = " + page + ", size = " + size);
         List<Device> devices = new ArrayList<>();
 
-        Device d1 = new Device();
-        d1.setId("0001");
-        d1.setOs("Android 5.0");
-        d1.setBrand("Samsung");
+        Device d1 = new Device(
+                "0001",
+                "Android 5.0",
+                "Samsung"
+        );
+        Device d2 = new Device(
+                "0002",
+                "Android 6.0",
+                "Huawei"
+        );
         devices.add(d1);
-
-        Device d2 = new Device();
-        d2.setId("0002");
-        d2.setOs("Android 6.0");
-        d2.setBrand("Huawei");
         devices.add(d2);
 
         return devices;
     }
 
+    // curl -vi "localhost:8080/myapp/device/0001"
     @Path("/{id: [0-9]+}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response fetchBy(@PathParam("id") String id) {
-        Device d1 = new Device();
-        d1.setId("0001");
-        d1.setOs("Android 5.0");
-        d1.setBrand("Samsung");
-
-        Device d2 = new Device();
-        d2.setId("0002");
-        d2.setOs("Android 6.0");
-        d2.setBrand("Huawei");
+        Device d1 = new Device(
+                "0001",
+                "Android 5.0",
+                "Samsung"
+        );
+        Device d2 = new Device(
+                "0002",
+                "Android 6.0",
+                "Huawei"
+        );
 
         if (id.equals("0001")) {
             return Response.ok(d1).build();
@@ -61,6 +65,9 @@ public class DeviceRestService {
         }
     }
 
+    // curl -vi -X POST -H "Content-Type: application/json" \
+    // -d '{ "id" : "0003", "os" : "ios", "brand" : "apple" }' \
+    // "localhost:8080/myapp/device/0000"
     @Path("/{id: [0-9]+}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -70,6 +77,9 @@ public class DeviceRestService {
         return Response.ok().build();
     }
 
+    // curl -vi -X PUT -H "Content-Type: application/json" \
+    // -d '{ "id" : "0003", "os" : "ios", "brand" : "apple" }' \
+    // "localhost:8080/myapp/device/0000"
     @Path("/{id: [0-9]+}")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -79,6 +89,7 @@ public class DeviceRestService {
         return Response.ok().build();
     }
 
+    // curl -vi -X DELETE "localhost:8080/myapp/device/0001"
     @Path("/{id: [0-9]+}")
     @DELETE
     public Response delete(@PathParam("id") String id) {
