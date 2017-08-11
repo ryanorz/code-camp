@@ -1,15 +1,27 @@
 package com.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.status;
+
 /**
  * Created by shiy on 7/21/17.
  */
 @Path("/device")
+@AccessLogger
 public class DeviceRestService {
+
+    private static Logger logger = LogManager.getLogger(DeviceRestService.class.getName());
 
     @Context
     UriInfo uriInfo;
@@ -65,18 +77,6 @@ public class DeviceRestService {
         }
     }
 
-    // curl -vi -X POST -H "Content-Type: application/json" \
-    // -d '{ "id" : "0003", "os" : "ios", "brand" : "apple" }' \
-    // "localhost:8080/myapp/device/0000"
-    @Path("/{id: [0-9]+}")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Device device) {
-        System.out.println("> Create device:");
-        device.print();
-        return Response.ok().build();
-    }
-
     // curl -vi -X PUT -H "Content-Type: application/json" \
     // -d '{ "id" : "0003", "os" : "ios", "brand" : "apple" }' \
     // "localhost:8080/myapp/device/0000"
@@ -84,9 +84,22 @@ public class DeviceRestService {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Device device) {
-        System.out.println("> Update device:");
-        device.print();
-        return Response.ok().build();
+        if (device.infoValidation()) {
+            try {
+                ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                String deviceJson = null;
+                deviceJson = ow.writeValueAsString(device);
+                MessageProducer mp = MessageProducer.getInstance();
+                mp.send("xxx", deviceJson);
+                return ok().build();
+            } catch (JsonProcessingException e) {
+                logger.error("Processing Json error.");
+                e.printStackTrace();
+                return status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            }
+        } else {
+            return status(Response.Status.BAD_REQUEST).entity("device info error.").build();
+        }
     }
 
     // curl -vi -X DELETE "localhost:8080/myapp/device/0001"

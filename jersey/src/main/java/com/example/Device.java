@@ -21,6 +21,10 @@ public class Device {
         this.brand = brand;
     }
 
+    public boolean infoValidation() {
+        return true;
+    }
+
     public String getId() {
         return id;
     }

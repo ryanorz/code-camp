@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
  * Created by shiy on 7/21/17.
  */
 @Path("myresource")
+@AccessLogger
 public class MyResource {
 
     @GET

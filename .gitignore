@@ -46,3 +46,9 @@ kafka/*.kdev*
 # boost
 boost/build
 boost/*.kdev*
+
+# jersey
+jersey/.idea
+jersey/target
+jersey/logs
+jersey/*.iml
