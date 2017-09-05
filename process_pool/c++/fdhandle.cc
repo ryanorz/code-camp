@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/epoll.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 void sig_handler(int sig)
 {
@@ -45,7 +47,7 @@ void add_fd(int epollfd, int fd, uint32_t events)
     epoll_event event;
     event.data.fd = fd;
     event.events  = events;
-    epoll_ctl(epollfd, EPOLL_CTL_ADD, &event);
+    epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event);
     set_nonblocking(fd);
 }
 
