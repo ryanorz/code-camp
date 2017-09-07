@@ -52,3 +52,9 @@ jersey/.idea
 jersey/target
 jersey/logs
 jersey/*.iml
+
+# Build
+*/build
+*/.vscode
+*/.kdev4
+*.kdev4
