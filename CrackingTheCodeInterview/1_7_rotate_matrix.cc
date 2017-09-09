@@ -33,3 +33,24 @@
         return true;
     }
  };
+
+ #define CATCH_CONFIG_MAIN
+ #include "catch.hpp"
+ 
+ TEST_CASE("", "")
+ {
+     vector<vector<int> > from = {
+         { 1, 2, 3 },
+         { 4, 5, 6 },
+         { 7, 8, 9 }
+     };
+     vector<vector<int> > to = {
+         { 7, 4, 1 },
+         { 8, 5, 2 },
+         { 9, 6, 3 }
+     };
+     Matrix<int> matrix{ from };
+     Solution solution;
+     solution.rotateMatrix(matrix);
+     REQUIRE(matrix == to);
+ }
